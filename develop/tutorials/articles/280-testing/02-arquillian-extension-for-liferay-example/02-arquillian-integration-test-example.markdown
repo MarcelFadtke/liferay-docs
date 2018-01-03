@@ -113,6 +113,29 @@ The Liferay Arquillian Extension injects the `_sampleService` field with a
 
 The integration test has some dependencies, of course. 
 
+## Gradle jar task customization
+To regard the parameter for the tempDir in the ProcessExecution you either have to add the following configuration to your module build.gradle file:
+```
+jar {
+    if (project.hasProperty('dir')) {
+        destinationDir = file(dir);
+    }
+}
+```
+
+or the following configuration in the project build.gradle file to use this configuration for all subprojects:
+```
+subprojects {
+    plugins.withType(JavaPlugin) {
+        jar {
+            // needed for arquillian testIntegration
+            if (project.hasProperty('dir')) {
+                destinationDir = file(dir);
+            }
+        }
+    }
+}
+```
 ## Dependencies [](id=dependencies)
 
 The project's `build.gradle` file specifies this test's dependencies on
